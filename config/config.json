@@ -1,0 +1,8 @@
+{
+  "development": {
+    "username": "arnoldtan",
+    "database": "c9",
+    "host": "0.0.0.0",
+    "dialect": "mysql"
+  }
+}
