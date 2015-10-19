@@ -1,3 +1,5 @@
+"use strict";
+
 var app = require('./app.js');
 var models = require("./models");
 var server = require('http').createServer(app);
