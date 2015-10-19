@@ -9,6 +9,7 @@ var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
 
 var account_helper = require('./lib/account_helper.js');
+var dashboardController = require('./lib/dashboardController.js');
 var TeacherController = require('./lib/TeacherController.js');
 var StudentController = require('./lib/StudentController.js');
 
@@ -27,7 +28,7 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function (req, res) {
-  if (req.session.authenticated) return res.redirect('/app');
+  if (req.session.authenticated) return res.redirect('/dashboard');
   return res.sendFile(__dirname + '/public/html/index.html');
 });
 
@@ -40,7 +41,7 @@ app.use(function (req, res, next) {
   else return next();
 });
 
-
+app.get('/dashboard', dashboardController);
 
 app.get('/logout', account_helper.logout);
 
