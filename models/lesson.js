@@ -5,16 +5,16 @@ module.exports = function(sequelize, DataTypes) {
     lessonUrl: {
       type: DataTypes.STRING,
       unique: true,
+      allowNull: true,
       validate: {
-        notNull: true,
         notEmpty: true
       }
     },
     imagePath: {
       type: DataTypes.STRING,
       unique: true,
+      allowNull: true,
       validate: {
-        notNull: false,
         notEmpty: false
       }
     }

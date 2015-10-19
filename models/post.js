@@ -5,8 +5,8 @@ module.exports = function(sequelize, DataTypes) {
     content: {
         type: DataTypes.STRING,
         unique: false,
+        allowNull: true,
         validate: {
-          notNull: true,
           notEmpty: true
         }
     }
