@@ -5,7 +5,7 @@ module.exports = function(sequelize, DataTypes) {
     lessonUrl: {
       type: DataTypes.STRING,
       unique: true,
-      allowNull: true,
+      allowNull: false,
       validate: {
         notEmpty: true
       }
@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     imagePath: {
       type: DataTypes.STRING,
       unique: true,
-      allowNull: true,
+      allowNull: false,
       validate: {
         notEmpty: false
       }

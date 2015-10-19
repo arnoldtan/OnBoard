@@ -2,13 +2,21 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Class = sequelize.define("Class", {
+    className: {
+      type: DataTypes.STRING,
+      unique: false,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
     classCode: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: true,
-        validate: {
-          notEmpty: true
-        }
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     }
   }, {
     classMethods: {

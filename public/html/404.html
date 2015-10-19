@@ -48,7 +48,8 @@
 		#main .row {
 			width: 100%;
 			max-width: 100%;
-			padding-top: 2.5%;
+			padding: 4%;
+			text-align: center;
 		}
 
 		#logo {
@@ -62,40 +63,6 @@
 		.right li {
 			float: right;
 		}
-
-		.add-class {
-			font-size: 1em;
-			text-align: center;
-		}
-
-		.class-list {
-			list-style-type: none;
-			text-align: center;
-			font-size: 2em;
-		}
-
-		.class-list a:link, .class-list a:visited, .class-list a:hover, .class-list a:active {
-			text-decoration: none;
-			color: #000;
-		}
-
-		.class-list li {
-			margin: 0;
-			padding: 1em;
-			border-bottom: solid 1px;
-			cursor: pointer;
-			opacity: 0.5;
-			background-color: #4CFF4C;
-		}
-
-		.class-list li:first-child {
-			border-top: solid 1px;
-		}
-
-		.class-list-heading {
-			text-align: center;
-		}
-
 
 	</style>
 	<script src="/scripts/jquery-2.1.4.min.js"></script>
@@ -111,30 +78,12 @@
 			</ul>
 		</header>
 		<div class="row">
-			<form class="add-class" action="/class/add" method="post">
-				<input type="text" placeholder="Class Name" name="className">
-				<input type="submit" value="Add Class">
-			</form>
-			<h4 class="class-list-heading">Your Classes</h4>
-			<ul class="class-list">
-				<% for (var i=0; i<classes.length; ++i) { %>
-					<li><a href="/class/<%= classes[i].dataValues.classCode %>"><%= classes[i].dataValues.className %></a></li>
-				<% } %>
-			</ul>
+			<h1>404 Not Found</h1>
+			<h3>The requested resource does not exist. Click <a href="/">here</a> to return to main page</h3>
 		</div>
 	</div>
 	<script>
-		$(document).ready(function() {
-			$('.class-list li').hover(function(e) {
-				$(this).fadeTo(100, 1);
-			}, function(e) {
-				$(this).fadeTo(100, 0.5);
-			});
-			$('.class-list li').click(function(e) {
-				console.log($(this).children());
-				window.location = $(this).children()[0].href;
-			});
-		});
+
 	</script>
 </body>
 </html>

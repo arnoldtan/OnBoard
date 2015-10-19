@@ -5,7 +5,7 @@ module.exports = function(sequelize, DataTypes) {
     username: {
       type: DataTypes.STRING,
       unique: true,
-      allowNull: true,
+      allowNull: false,
       validate: {
         notEmpty: true
       }
@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     password: {
       type: DataTypes.STRING,
       unique: false,
-      allowNull: true,
+      allowNull: false,
       validate: {
         notEmpty: true
       }
@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
     type: {
       type: DataTypes.ENUM('teacher', 'student'),
       unique: false,
-      allowNull: true,
+      allowNull: false,
       validate: {
         notEmpty: true
       }

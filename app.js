@@ -10,6 +10,7 @@ var RedisStore = require('connect-redis')(session);
 
 var account_helper = require('./lib/account_helper.js');
 var dashboardController = require('./lib/dashboardController.js');
+var ClassController = require('./lib/ClassController.js');
 var TeacherController = require('./lib/TeacherController.js');
 var StudentController = require('./lib/StudentController.js');
 
@@ -43,6 +44,16 @@ app.use(function (req, res, next) {
 
 app.get('/dashboard', dashboardController);
 
+app.post('/class/add', ClassController.addClass);
+
+app.post('/class/:classCode', ClassController.updateClass);
+
+app.get('/class/:classCode', ClassController.classPage);
+
 app.get('/logout', account_helper.logout);
+
+app.all('*', function(req, res) {
+	res.status(404).sendFile(__dirname + '/public/html/404.html');
+});
 
 module.exports = app;
