@@ -111,10 +111,18 @@
 			</ul>
 		</header>
 		<div class="row">
-			<form class="add-class" action="/class/add" method="post">
-				<input type="text" placeholder="Class Name" name="className">
-				<input type="submit" value="Add Class">
-			</form>
+			<% if (user.type === 'teacher') { %>
+				<form class="add-class" action="/class/add" method="post">
+					<input type="text" placeholder="Class Name" name="className">
+					<input type="submit" value="Add Class">
+				</form>
+			<% } else if (user.type === 'student') { %>
+				<form class="add-class" action="/class/join" method="post">
+					<input type="text" placeholder="Class Code" name="classCode">
+					<input type="submit" value="Join Class">
+				</form>
+			<% } %>
+
 			<h4 class="class-list-heading">Your Classes</h4>
 			<ul class="class-list">
 				<% for (var i=0; i<classes.length; ++i) { %>

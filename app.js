@@ -46,6 +46,8 @@ app.get('/dashboard', dashboardController);
 
 app.post('/class/add', ClassController.addClass);
 
+app.post('/class/join', ClassController.joinClass);
+
 app.post('/class/:classCode', ClassController.updateClass);
 
 app.get('/class/:classCode', ClassController.classPage);
