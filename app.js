@@ -11,6 +11,7 @@ var RedisStore = require('connect-redis')(session);
 var account_helper = require('./lib/account_helper.js');
 var dashboardController = require('./lib/dashboardController.js');
 var ClassController = require('./lib/ClassController.js');
+var LessonController = require('./lib/LessonController.js');
 var TeacherController = require('./lib/TeacherController.js');
 var StudentController = require('./lib/StudentController.js');
 
@@ -51,6 +52,10 @@ app.post('/class/join', ClassController.joinClass);
 app.post('/class/:classCode', ClassController.updateClass);
 
 app.get('/class/:classCode', ClassController.classPage);
+
+app.get('/class/:classCode/lesson/manage', LessonController.lessonManagementPage);
+
+app.get('/class/:classCode/resource', function(req, res) { res.end('Resource Page') });
 
 app.get('/logout', account_helper.logout);
 
