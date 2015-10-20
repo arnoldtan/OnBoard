@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
-  var Post = sequelize.define("Post", {
+  var Comment = sequelize.define("Comment", {
     content: {
         type: DataTypes.STRING,
         unique: false,
@@ -13,10 +13,9 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Post.hasMany(models.Comment);
       }
     }
   });
 
-  return Post;
+  return Comment;
 };

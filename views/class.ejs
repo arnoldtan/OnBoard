@@ -19,7 +19,6 @@
 
 		#main {
 			width: 100%;
-			height: 100%;
 			max-width: 100%;
 			background-size: cover;
 			background-color: #fcfcfc;
@@ -30,9 +29,12 @@
 		header {
 			padding: 32px;
 			height: 96px;
-			background: linear-gradient(rgba(7, 148, 57, 1), rgba(7, 148, 57, 0.6));
+			background: linear-gradient(rgba(7, 148, 57, 1), rgba(7, 148, 57, 1));
 			width: 100%;
 			color: white;
+			position: fixed;
+			top: 0;
+			z-index: 10;
 		}
 
 		header ul {
@@ -68,6 +70,9 @@
 			background-color: #00FF99;
 			padding: 1em 1em 0 2em !important;
 			position: fixed;
+			top: 96px;
+			z-index: 10;
+			height: 80px;
 		}
 
 		#class-code-heading {
@@ -80,6 +85,30 @@
 
 		#resource-button:hover {
 			background-color: #FFA500;
+		}
+
+		#forum {
+			margin-top: 176px;
+			padding-top: 2em;
+			z-index: 0;
+		}
+
+		#post-form-content, #post-form-submit-button {
+			display: block;
+			margin: 0 auto;
+		}
+
+		.post {
+			background-color: #FAE1DD;
+			text-align: left;
+			width: 50%;
+			border-radius: 10px;
+			padding: 1.5em;
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 1em;
+			opacity: 0.7;
+			overflow: scroll;
 		}
 
 	</style>
@@ -118,10 +147,21 @@
 				<input type="button" id="resource-button" class="button button-primary" value="RESOURCES">
 			</div>
 		</div>
-		<div class="row" id="">
-
-		</div>
+		<div id="forum">
+			<form action="/post/add" method="post">
+				<input type="text" style="display:none" name="classCode" value="<%= Class.classCode %>">
+				<textarea id="post-form-content" rows="20" cols="80" name="content" placeholder="Type your post here"></textarea>
+				<input id="post-form-submit-button" type="submit" value="POST">
+			</form>
+			<% for (var i=posts.length-1; i>-1; --i) { %>
+				<div class="post">
+					<h3><%= posts[i].dataValues.User.username %></h3>
+					<p style="font-size:24px"><%= posts[i].dataValues.content %></p>
+					<p style="font-size:12px; text-align:right; margin-bottom:0"><%= posts[i].dataValues.updatedAt %></p>
+				</div>
+			<% } %>
 	</div>
+	<script src="/scripts/jquery-2.1.4.min.js"></script>
 	<script>
 		if ('<%= user.type %>' === 'teacher') {
 			var copy_to_clipboard = document.getElementById('copy-to-clipboard');
@@ -151,6 +191,14 @@
 		var resource_button = document.getElementById('resource-button');
 		resource_button.addEventListener('click', function(e) {
 			location.href += '/resource';
+		});
+
+		$(document).ready(function() {
+			$('.post').hover(function(e) {
+				$(this).fadeTo(100, 1);
+			}, function(e) {
+				$(this).fadeTo(100, 0.7);
+			});
 		});
 	</script>
 </body>

@@ -21,7 +21,6 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Lesson.belongsToMany(models.Class, { through: 'LessonClass' });
       }
     }
   });
