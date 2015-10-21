@@ -49,7 +49,6 @@
 			width: 100%;
 			max-width: 100%;
 			padding-top: 2.5%;
-			margin-top: 96px;
 		}
 
 		#logo {
@@ -65,43 +64,14 @@
 			margin-right: 1em;
 		}
 
-		.add-class {
-			font-size: 1em;
+		#whiteboard-manager-wrapper {
+			margin-top: 96px;
 			text-align: center;
 		}
 
-		.class-list {
-			list-style-type: none;
-			text-align: center;
-			font-size: 2em;
+		#whiteboard-manager {
+			width: 80%;
 		}
-
-		.class-list a:link, .class-list a:visited, .class-list a:hover, .class-list a:active {
-			text-decoration: none;
-			color: #000;
-		}
-
-		.class-list li {
-			margin: 0;
-			padding: 1em;
-			border-bottom: solid 1px;
-			cursor: pointer;
-			opacity: 0.5;
-			background-color: #4CFF4C;
-		}
-
-		.class-list li:first-child {
-			border-top: solid 1px;
-		}
-
-		.class-list-heading {
-			text-align: center;
-		}
-
-		#class-list-panel {
-			
-		}
-
 
 	</style>
 	<script src="/scripts/jquery-2.1.4.min.js"></script>
@@ -114,32 +84,22 @@
 			</ul>
 			<ul class="right">
 				<li><a class="button" href="/logout">Log Out</a></li>
+				<li><a class="button" href="/dashboard">Dashboard</a></li>
+				<li><a class="button" href="/class/<%= Class.classCode %>"><%= Class.className %></a></li>
 			</ul>
 		</header>
-		<div class="row" id="class-list-panel">
-			<% if (user.type === 'teacher') { %>
-				<form class="add-class" action="/class/add" method="post">
-					<input type="text" placeholder="Class Name" name="className">
-					<input type="submit" value="Add Class">
-				</form>
-			<% } else if (user.type === 'student') { %>
-				<form class="add-class" action="/class/join" method="post">
-					<input type="text" placeholder="Class Code" name="classCode">
-					<input type="submit" value="Join Class">
-				</form>
-			<% } %>
-
-			<h4 class="class-list-heading">Your Classes</h4>
-			<ul class="class-list">
-				<% for (var i=0; i<classes.length; ++i) { %>
-					<li><a href="/class/<%= classes[i].dataValues.classCode %>"><%= classes[i].dataValues.className %></a></li>
-				<% } %>
-			</ul>
+		<div class="row" id="whiteboard-manager-wrapper">
+			<div id="whiteboard-manager">
+				<h3 style="display:inline-block">Saved Lessons</h3>
+				<button id="new-lesson-button" style="float:right" class="button button-primary">START NEW LIVE LESSON</button>
+				<input type="text" style="float:right" placeholder="Lesson name" id="create-lesson-name">
+			</div>
 		</div>
 	</div>
+	<script src="/scripts/jquery-2.1.4.min.js"></script>
 	<script>
 		$(document).ready(function() {
-			$('.class-list li').hover(function(e) {
+			/*$('.class-list li').hover(function(e) {
 				$(this).fadeTo(100, 1);
 			}, function(e) {
 				$(this).fadeTo(100, 0.5);
@@ -147,6 +107,17 @@
 			$('.class-list li').click(function(e) {
 				console.log($(this).children());
 				window.location = $(this).children()[0].href;
+			});*/
+			$('#new-lesson-button').click(function(e) {
+				$.ajax('/class/<%= Class.classCode %>/lesson/add', {
+					method: 'POST',
+					data: {
+						lessonName: $('#create-lesson-name').val()
+					},
+					success: function(data) {
+						location.href = '/class/<%= Class.classCode %>/lesson/r/' + data;
+					}
+				})
 			});
 		});
 	</script>

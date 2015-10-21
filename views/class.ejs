@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Lesson</title>
+	<title><%= Class.className %></title>
 	<link rel="stylesheet" href="/styles/normalize.css">
 	<link rel="stylesheet" href="/styles/skeleton.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -174,11 +174,11 @@
 					<input type="button" id="copy-to-clipboard" value="COPY TO CLIPBOARD">
 				</div>
 				<div class="two columns">
-					<input type="button" id="manage-whiteboard-button" class="button button-primary" value="WHITEBOARD MANAGEMENT">
+					<input type="button" id="manage-lesson-button" class="button button-primary" value="LESSON MANAGEMENT">
 				</div>
 			<% } else if (user.type === 'student') { %>
 				<div class="seven columns">
-					<h5>There are no live lessons right now.</h5>
+					<h5 id="lesson-status">There are no live lessons right now.</h5>
 				</div>
 			<% } %>
 			<div class="two columns">
@@ -230,7 +230,19 @@
 			<% } %>
 	</div>
 	<script src="/scripts/jquery-2.1.4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.js"></script>
 	<script>
+		var socket = io();
+			
+		socket.emit('enter-class', { classUrl: '<%= Class.classUrl %>' });
+
+		socket.on('gotLesson', function(data) {
+			$('#lesson-status').html("Click <a href='/class/<%= Class.classCode %>/lesson/r/" + data.lessonUrl + "'>here</a> to view live lesson.");
+		});
+		socket.on('noLesson', function() {
+			$('#lesson-status').html("There are no live lessons right now.");
+		});
+
 		if ('<%= user.type %>' === 'teacher') {
 			var copied = false;
 			var copy_to_clipboard = document.getElementById('copy-to-clipboard');
@@ -249,8 +261,8 @@
 	  		window.getSelection().removeAllRanges();
 			});
 
-			var manage_whiteboard_button = document.getElementById('manage-whiteboard-button');
-			manage_whiteboard_button.addEventListener('click', function(e) {
+			var manage_lesson_button = document.getElementById('manage-lesson-button');
+			manage_lesson_button.addEventListener('click', function(e) {
 				location.href += '/lesson/manage';
 			});
 		}

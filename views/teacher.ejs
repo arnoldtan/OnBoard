@@ -144,12 +144,26 @@
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.js"></script>
 	<script>
-		var url = "<%= teacher.url %>";
+		window.addEventListener("beforeunload", function (event) {
+		  event.preventDefault();
+		});
+		var url = location.href.split('/')[location.href.split('/').length-1];
 		$(document).ready(function () {
 			
 			var socket = io();
+			$('#save-lesson-button').click(function(e) {
+				var whiteboard = document.getElementById('whiteboard');
+				var whiteboard_dataUrl = whiteboard.toDataURL();
+				socket.emit('save-lesson', {
+					lessonUrl: url,
+					image: whiteboard_dataUrl
+				});
+			});
 			
-			socket.emit('create-room', {url: url});
+			socket.emit('create-room', {
+				url: url,
+				classUrl: '<%= Class.classUrl %>'
+			});
 			
 			socket.on('change-user', function (data) {
 				$('#studentno').text(data.studentno.toString());	
@@ -268,12 +282,16 @@
 			</ul>
 			<ul class="right">
 				<li><a class="button" href="/logout">Log Out</a></li>
+				<li><a class="button" href="/dashboard">Dashboard</a></li>
+				<li><a class="button" href="/class/<%= Class.classCode %>"><%= Class.className %></a></li>
+				<li><a class="button" href="/class/<%= Class.classCode %>/lesson/manage">LESSON MANAGEMENT</a></li>
 			</ul>
 		</header>
 		<div class="row">
 			<div class="nine columns">
 				<div id="board">
 					<div id="tools">
+						<h3><%= lesson.dataValues.lessonName %></h3>
 						<ul>
 							<li><input type='color' id="colorPicker"/></li>
 							<li><input type='range' min='1' max='100' step='2' value='10' id="weightPicker" class='u-full-width'/></li>
@@ -295,8 +313,6 @@
 					<audio id="myaudio" autoplay controls></audio>
 				</div>
 				<hr>
-				<h3><%= teacher.username %>'s classroom</h3>
-				<pre><code><a href="/lesson/<%= teacher.url %>">/lesson/<%= teacher.url %></code></pre>
 				<div class="row" id="manage-row">
 					<p class='four columns'><span id="studentno">0</span> online</p>
 					<button class='button-primary eight columns' id="toggle-chat">toggle chat</button>
@@ -306,10 +322,11 @@
 				<div id="chat">
 				</div>
 				<input id="chatbox">
+				<button id="save-lesson-button" class="button button-primary">SAVE LESSON</a>
 		</div>
 	</div>
 	<script src="https://cdn.temasys.com.sg/skylink/skylinkjs/0.6.x/skylink.complete.js"></script>
-	<script>
+	<!--<script>
 		var skylink = new Skylink();
 
 		skylink.on('peerJoined', function(peerId, peerInfo, isSelf) {

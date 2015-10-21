@@ -1,20 +1,41 @@
+var models = require('./models');
+
 module.exports = function (io) {
     var clients = [];
     var rooms = [];
     var db = [];
     var chat = [];
+    var saved_rooms = [];
     io.on('connection', function (socket) {
+      socket.on('enter-class', function(data) {
+        socket.join(data.classUrl);
+      });
+      socket.on('save-lesson', function(data) {
+          models.Lesson.update({
+            image: data.image
+          }, {
+            where: {
+              lessonUrl: data.lessonUrl
+            }
+          }).then(function(err) {
+            saved_rooms[data.lessonUrl] = true;
+          });
+        });
        socket.on('create-room', function (data) {
             clients.push({
                 socket: socket,
                 room: data.url,
-                type: 'teacher'
+                type: 'teacher',
+                classUrl: data.classUrl
             });
             chat.push({
                 room: data.url,
                 state: false
             });
             socket.join(data.url);
+            io.to(data.classUrl).emit('gotLesson', {
+              lessonUrl: data.url
+            });
        });
        socket.on('join-room', function (data) {
             clients.push({
@@ -32,11 +53,24 @@ module.exports = function (io) {
        socket.on('disconnect', function () {
             for (var i=0; i<clients.length; ++i) {
                 if (clients[i].socket !== socket) continue;
-                if (clients[i].type !== 'student') continue;
-                --rooms[clients[i].room];
-                io.to(clients[i].room).emit('change-user', {
-                   studentno: rooms[clients[i].room]
-                });
+                if (clients[i].type === 'student') {
+                  --rooms[clients[i].room];
+                  io.to(clients[i].room).emit('change-user', {
+                     studentno: rooms[clients[i].room]
+                  });
+                }
+                else {
+                  io.to(clients[i].classUrl).emit('noLesson');
+                  if (saved_rooms[clients[i].room] !== true) {
+                    models.Lesson.destroy({
+                      where: {
+                        lessonUrl: clients[i].room
+                      }
+                    }).then(function() {
+
+                    });
+                  }
+                }
             }
        });
        socket.on('draw', function (data) {

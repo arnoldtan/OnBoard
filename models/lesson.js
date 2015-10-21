@@ -2,6 +2,14 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Lesson = sequelize.define("Lesson", {
+    lessonName: {
+      type: DataTypes.STRING,
+      unique: false,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
     lessonUrl: {
       type: DataTypes.STRING,
       unique: true,
@@ -10,10 +18,10 @@ module.exports = function(sequelize, DataTypes) {
         notEmpty: true
       }
     },
-    imagePath: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
+    image: {
+      type: DataTypes.TEXT,
+      unique: false,
+      allowNull: true,
       validate: {
         notEmpty: false
       }
