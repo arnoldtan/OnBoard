@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function (req, res) {
   if (req.session.authenticated) return res.redirect('/dashboard');
-  return res.sendFile(__dirname + '/public/html/index.html');
+  return res.sendFile(__dirname + '/public/html/index_new.html');
 });
 
 app.post('/login', account_helper.login);
