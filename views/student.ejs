@@ -7,6 +7,11 @@
 	<link rel="stylesheet" href="/styles/skeleton.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<style>
+		html, body {
+			width: 100%;
+			height: 100%;
+		}
+
 		#main {
 			width: 100%;
 			max-width: 100%;
@@ -20,7 +25,7 @@
 			padding: 32px;
 			height: 32px;
 			background: linear-gradient(rgba(7, 148, 57, 1), rgba(7, 148, 57, 1));
-			width: 100%;
+			max-width: 100%;
 			color: white;
 		}
 
@@ -30,12 +35,8 @@
 			float: left;
 		}
 
-		header ul li {
-			float: left;
-		}
-
 		#main .row {
-			width: 100%;
+			max-width: 100%;
 			padding: 4%;
 		}
 
@@ -101,6 +102,10 @@
 		
 		#chat, #chatbox {
 			font-family: Roboto;
+		}
+
+		.right li {
+			float: right;
 		}
 
 	</style>
@@ -206,6 +211,9 @@
 				<li><img src="/images/logo.png" id="logo"></li>
 			</ul>
 			<ul class="right">
+				<li><a class="button" href="/logout">Log Out</a></li>
+				<li><a class="button" href="/dashboard">Dashboard</a></li>
+				<li><a class="button" href="/class/<%= Class.classCode %>"><%= Class.className %></a></li>
 			</ul>
 		</header>
 		<div class="row">

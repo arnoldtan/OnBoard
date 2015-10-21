@@ -9,6 +9,13 @@ module.exports = function (io) {
     io.on('connection', function (socket) {
       socket.on('enter-class', function(data) {
         socket.join(data.classUrl);
+        for (var i=0; i<clients.length; ++i) {
+          if (clients[i].classUrl === data.classUrl) {
+            io.to(data.classUrl).emit('gotLesson', {
+              lessonUrl: clients[i].room
+            });
+          }
+        }
       });
       socket.on('save-lesson', function(data) {
           models.Lesson.update({
@@ -71,6 +78,7 @@ module.exports = function (io) {
                     });
                   }*/
                 }
+                clients.splice(i, 1);
             }
        });
        socket.on('draw', function (data) {
