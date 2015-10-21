@@ -73,6 +73,29 @@
 			width: 80%;
 		}
 
+		.lesson {
+			background-color: #FAE1DD;
+			text-align: left;
+			width: 50%;
+			border-radius: 10px;
+			padding: 1.5em;
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 1em;
+			opacity: 0.7;
+			overflow: scroll;
+		}
+
+		#delete-lesson-button {
+			background-color: #FFAE19 !important;
+			border: 1px solid #FFAE19 !important;
+		}
+
+		#delete-lesson-button:hover {
+			background-color: #F39D00 !important;
+			border: 1px solid #F39D00 !important;
+		}
+
 	</style>
 	<script src="/scripts/jquery-2.1.4.min.js"></script>
 </head>
@@ -93,21 +116,26 @@
 				<h3 style="display:inline-block">Saved Lessons</h3>
 				<button id="new-lesson-button" style="float:right" class="button button-primary">START NEW LIVE LESSON</button>
 				<input type="text" style="float:right" placeholder="Lesson name" id="create-lesson-name">
+				<% for (var i=lessons.length-1; i>-1; --i) { %>
+					<div class="lesson">
+						<h3 style="display:inline-block"><%= lessons[i].dataValues.lessonName %></h3>
+						<p style="font-size:12px; display:inline-block"><%= lessons[i].dataValues.updatedAt %></p>
+						<input id="lessonUrl" type="text" style="display:none" value="<%= lessons[i].dataValues.lessonUrl %>">
+						<button style="display:block" id="delete-lesson-button" class="button button-primary">DELETE LESSON</button>
+						<a style="display:auto" class="button button-primary" href="/class/<%= Class.classCode %>/lesson/r/<%= lessons[i].dataValues.lessonUrl %>">START LESSON</a>
+					</div>
+				<% } %>
 			</div>
 		</div>
 	</div>
 	<script src="/scripts/jquery-2.1.4.min.js"></script>
 	<script>
 		$(document).ready(function() {
-			/*$('.class-list li').hover(function(e) {
+			$('.lesson').hover(function(e) {
 				$(this).fadeTo(100, 1);
 			}, function(e) {
 				$(this).fadeTo(100, 0.5);
 			});
-			$('.class-list li').click(function(e) {
-				console.log($(this).children());
-				window.location = $(this).children()[0].href;
-			});*/
 			$('#new-lesson-button').click(function(e) {
 				$.ajax('/class/<%= Class.classCode %>/lesson/add', {
 					method: 'POST',
@@ -116,6 +144,17 @@
 					},
 					success: function(data) {
 						location.href = '/class/<%= Class.classCode %>/lesson/r/' + data;
+					}
+				});
+			});
+			$('#delete-lesson-button').click(function(e) {
+				var that = $(this);
+				$.ajax('/class/<%= Class.classCode %>/lesson/r/' + $('#lessonUrl').val(), {
+					method: 'DELETE',
+					statusCode: {
+						200: function() {
+							that.parent().remove();
+						}
 					}
 				})
 			});

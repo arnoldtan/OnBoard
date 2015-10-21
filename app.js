@@ -58,7 +58,9 @@ app.get('/class/:classCode/lesson/manage', LessonController.lessonManagementPage
 
 app.post('/class/:classCode/lesson/add', LessonController.addLesson);
 
-app.get('/class/:classCode/lesson/r/:lessonUrl', LessonController.loadLesson);
+app.route('/class/:classCode/lesson/r/:lessonUrl')
+	.get(LessonController.loadLesson)
+	.delete(LessonController.deleteLesson);
 
 app.get('/class/:classCode/resource', function(req, res) { res.end('Resource Page') });
 
