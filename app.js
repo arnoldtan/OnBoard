@@ -60,6 +60,10 @@ app.get('/class/:classCode/resource', function(req, res) { res.end('Resource Pag
 
 app.post('/post/add', forumController.addPost);
 
+app.route('/post/:postId')
+	.delete(forumController.deletePost_ajax)
+	.put(forumController.updatePost_ajax);
+
 app.get('/logout', account_helper.logout);
 
 app.all('*', function(req, res) {

@@ -112,22 +112,31 @@
 			overflow: scroll;
 		}
 
-		.post h3, #edit-post-button, #delete-post-button {
+		.post h3, .edit-post-button, .delete-post-button {
 			display: inline-block;
 		}
 
-		#edit-post-button, #delete-post-button {
+		.edit-post-button, .delete-post-button {
 			float: right;
 		}
 
-		#delete-post-button {
-			background-color: #FFAE19;
-			border: 1px solid #FFAE19;
+		.delete-post-button {
+			background-color: #FFAE19 !important;
+			border: 1px solid #FFAE19 !important;
 		}
 
-		#delete-post-button:hover {
-			background-color: #F39D00;
-			border: 1px solid #F39D00;
+		.delete-post-button:hover {
+			background-color: #F39D00 !important;
+			border: 1px solid #F39D00 !important;
+		}
+
+		.hide {
+			display: none !important;
+		}
+
+		.post-edit-content {
+			display: block;
+			font-size: 1.5em;
 		}
 
 	</style>
@@ -175,9 +184,13 @@
 			<% for (var i=posts.length-1; i>-1; --i) { %>
 				<div class="post" id="<%= posts[i].dataValues.id %>">
 					<h3><%= posts[i].dataValues.User.username %></h3>
-					<button id="delete-post-button" class="button button-primary">Delete</button>
-					<button id="edit-post-button" class="button button-primary">Edit</button>
-					<p style="font-size:24px"><%= posts[i].dataValues.content %></p>
+					<% if (posts[i].dataValues.User.id === user.id) { %>
+						<button class="delete-post-button button button-primary">Delete</button>
+						<button class="edit-post-button button button-primary">Edit</button>
+					<% } %>
+					<p class="post-content" style="font-size:24px"><%= posts[i].dataValues.content %></p>
+					<textarea class="post-edit-content hide"><%= posts[i].dataValues.content %></textarea>
+					<button class="submit-edit-post-button hide">Post</button>
 					<p style="font-size:12px; text-align:right; margin-bottom:0"><%= posts[i].dataValues.updatedAt %></p>
 				</div>
 			<% } %>
@@ -220,6 +233,47 @@
 			}, function(e) {
 				$(this).fadeTo(100, 0.7);
 			});
+		});
+
+		$('.delete-post-button').click(function(e) {
+			var that = $(this);
+			$.ajax('/post/' + $(this).parent().attr('id'), {
+				statusCode: {
+					200: function() {
+						that.parent().remove();
+					}
+				},
+				method: 'DELETE'
+			});
+		});
+
+		$('.edit-post-button').click(function(e) {
+			$(this).parent().children('.post-content').toggleClass('hide');
+			$(this).parent().children('.post-edit-content').toggleClass('hide');
+			$(this).parent().children('.submit-edit-post-button').toggleClass('hide');
+		});
+
+		$('.submit-edit-post-button').click(function(e) {
+			var that = $(this);
+			$.ajax('/post/' + $(this).parent().attr('id'), {
+				statusCode: {
+					400: function() {
+						that.parent().children('.post-content').toggleClass('hide');
+						that.parent().children('.post-edit-content').toggleClass('hide');
+						that.parent().children('.submit-edit-post-button').toggleClass('hide');
+					},
+					200: function() {
+						that.parent().children('.post-content').html(that.parent().children('.post-edit-content').val());
+						that.parent().children('.post-content').toggleClass('hide');
+						that.parent().children('.post-edit-content').toggleClass('hide');
+						that.parent().children('.submit-edit-post-button').toggleClass('hide');
+					}
+				},
+				method: 'PUT',
+				data: {
+					content: that.parent().children('.post-edit-content').val()
+				}
+			})
 		});
 	</script>
 </body>
