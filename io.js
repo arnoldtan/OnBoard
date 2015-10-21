@@ -61,7 +61,7 @@ module.exports = function (io) {
                 }
                 else {
                   io.to(clients[i].classUrl).emit('noLesson');
-                  if (saved_rooms[clients[i].room] !== true) {
+                  /*if (saved_rooms[clients[i].room] !== true) {
                     models.Lesson.destroy({
                       where: {
                         lessonUrl: clients[i].room
@@ -69,7 +69,7 @@ module.exports = function (io) {
                     }).then(function() {
 
                     });
-                  }
+                  }*/
                 }
             }
        });

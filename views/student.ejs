@@ -179,6 +179,13 @@
 			var context = canvas[0].getContext("2d");
 			var color = "#000";
 			var stroke = 10;
+			if ('<%= image %>' !== '') {
+				var image = new Image();
+				image.onload = function() {
+					context.drawImage(image, 0, 0);
+				}
+				image.src = '<%= image %>'
+			}
 
 			context.lineJoin = 'round';
 
