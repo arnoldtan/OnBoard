@@ -64,6 +64,12 @@ app.route('/post/:postId')
 	.delete(forumController.deletePost_ajax)
 	.put(forumController.updatePost_ajax);
 
+app.post('/comment/add', forumController.addComment);
+
+app.route('/comment/:commentId')
+	.delete(forumController.deleteComment_ajax)
+	.put(forumController.updateComment_ajax);
+
 app.get('/logout', account_helper.logout);
 
 app.all('*', function(req, res) {
