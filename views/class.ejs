@@ -137,7 +137,7 @@
 			display: none !important;
 		}
 
-		.post-edit-content {
+		.post-edit-content, .comment-edit-content {
 			display: block;
 			font-size: 1.5em;
 		}
@@ -201,14 +201,14 @@
 					<% } %>
 					<p class="post-content" style="font-size:24px"><%= posts[i].dataValues.content %></p>
 					<textarea class="post-edit-content hide"><%= posts[i].dataValues.content %></textarea>
-					<button class="submit-edit-post-button hide">Post</button>
+					<button class="submit-edit-post-button hide">EDIT POST</button>
 					<input style="float:left; margin-bottom:0" type="button" value="SHOW COMMENTS" class="show-comment-button">
-					<input style="margin-bottom:0" type="button" value="HIDE COMMENTS" class="hide hide-comment-button">
+					<input style="float:left; margin-bottom:0" type="button" value="HIDE COMMENTS" class="hide hide-comment-button">
 					<div class="hide comment-section">
 						<form action="/comment/add" method="post">
 							<input type="text" style="display:none" name="classCode" value="<%= Class.classCode %>">
 							<input type="text" style="display:none" name="postId" value="<%= posts[i].dataValues.id %>">
-							<textarea class="comment-content" name="content" placeholder="Type your comment here" style="display:inline-block;" cols="60"></textarea>
+							<textarea class="comment-form-content" name="content" placeholder="Type your comment here" style="display:inline-block;" cols="60"></textarea>
 							<input id="comment-button" style="display:inline-block; margin-top: 1em; vertical-align: top" type="submit" value="COMMENT">
 						</form>
 						<% for (var j=posts[i].dataValues.Comments.length-1; j>-1; --j) { %>
@@ -220,7 +220,9 @@
 									<button class="delete-comment-button button button-primary">Delete</button>
 									<button class="edit-comment-button button button-primary">Edit</button>
 								<% } %>
-								<p style="font-size:24px"><%= posts[i].dataValues.Comments[j].dataValues.content %></p>
+								<p class="comment-content" style="font-size:24px"><%= posts[i].dataValues.Comments[j].dataValues.content %></p>
+								<textarea class="comment-edit-content hide"><%= posts[i].dataValues.Comments[j].dataValues.content %></textarea>
+								<button class="submit-edit-comment-button hide">EDIT COMMENT</button>
 							</div>
 						<% } %>
 					</div>
@@ -284,6 +286,7 @@
 
 		$('.edit-post-button').click(function(e) {
 			$(this).parent().children('.post-content').toggleClass('hide');
+			$(this).parent().children('.post-edit-content').val($(this).parent().children('.post-content').html());
 			$(this).parent().children('.post-edit-content').toggleClass('hide');
 			$(this).parent().children('.submit-edit-post-button').toggleClass('hide');
 		});
@@ -335,31 +338,32 @@
 			});
 		});
 
-		/*$('.edit-comment-button').click(function(e) {
-			$(this).parent().children('.post-content').toggleClass('hide');
-			$(this).parent().children('.post-edit-content').toggleClass('hide');
-			$(this).parent().children('.submit-edit-post-button').toggleClass('hide');
-		});*/
+		$('.edit-comment-button').click(function(e) {
+			$(this).parent().children('.comment-content').toggleClass('hide');
+			$(this).parent().children('.comment-edit-content').val($(this).parent().children('.comment-content').html());
+			$(this).parent().children('.comment-edit-content').toggleClass('hide');
+			$(this).parent().children('.submit-edit-comment-button').toggleClass('hide');
+		});
 
 		$('.submit-edit-comment-button').click(function(e) {
 			var that = $(this);
 			$.ajax('/comment/' + $(this).parent().attr('id').substring(1), {
 				statusCode: {
 					400: function() {
-						that.parent().children('.post-content').toggleClass('hide');
-						that.parent().children('.post-edit-content').toggleClass('hide');
-						that.parent().children('.submit-edit-post-button').toggleClass('hide');
+						that.parent().children('.comment-content').toggleClass('hide');
+						that.parent().children('.comment-edit-content').toggleClass('hide');
+						that.parent().children('.submit-edit-comment-button').toggleClass('hide');
 					},
 					200: function() {
-						that.parent().children('.post-content').html(that.parent().children('.post-edit-content').val());
-						that.parent().children('.post-content').toggleClass('hide');
-						that.parent().children('.post-edit-content').toggleClass('hide');
-						that.parent().children('.submit-edit-post-button').toggleClass('hide');
+						that.parent().children('.comment-content').html(that.parent().children('.comment-edit-content').val());
+						that.parent().children('.comment-content').toggleClass('hide');
+						that.parent().children('.comment-edit-content').toggleClass('hide');
+						that.parent().children('.submit-edit-comment-button').toggleClass('hide');
 					}
 				},
 				method: 'PUT',
 				data: {
-					content: that.parent().children('.post-edit-content').val()
+					content: that.parent().children('.comment-edit-content').val()
 				}
 			})
 		});
