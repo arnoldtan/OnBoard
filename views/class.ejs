@@ -216,7 +216,7 @@
 								<hr>
 								<h3><%= posts[i].dataValues.Comments[j].dataValues.User.dataValues.username %></h3>
 								<p style="font-size:12px; display:inline-block; margin-bottom:0"><%= posts[i].dataValues.Comments[j].dataValues.updatedAt %></p>
-								<% if (posts[i].dataValues.User.id === user.id) { %>
+								<% if (posts[i].dataValues.Comments[j].dataValues.User.dataValues.id === user.id) { %>
 									<button class="delete-comment-button button button-primary">Delete</button>
 									<button class="edit-comment-button button button-primary">Edit</button>
 								<% } %>
