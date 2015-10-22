@@ -168,19 +168,22 @@
 				<h3 style="overflow:hidden"><%= Class.className %></h3>
 			</div>
 			<% if (user.type === 'teacher') { %>
-				<div class="six columns">
+				<div class="five columns">
 					<h6 id="class-code-heading">Class Code:</h6>
 					<input type="text" id="class-code" value="<%= Class.classCode %>" disabled>
 					<input type="button" id="copy-to-clipboard" value="COPY TO CLIPBOARD">
 				</div>
-				<div class="three columns">
+				<div class="two columns">
 					<input type="button" id="manage-lesson-button" class="button button-primary" value="LESSON MANAGEMENT">
 				</div>
 			<% } else if (user.type === 'student') { %>
-				<div class="nine columns">
+				<div class="seven columns">
 					<h5 id="lesson-status">There are no live lessons right now.</h5>
 				</div>
 			<% } %>
+			<div class="two columns">
+				<a href="/class/<%= Class.classCode %>/resource" class="button button-primary" id="resource-button">Resources</a>
+			</div>
 		</div>
 		<div id="forum">
 			<form action="/post/add" method="post">

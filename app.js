@@ -15,6 +15,7 @@ var forumController = require('./lib/forumController.js');
 var LessonController = require('./lib/LessonController.js');
 var TeacherController = require('./lib/TeacherController.js');
 var StudentController = require('./lib/StudentController.js');
+var resourceController = require('./lib/resourceController.js');
 
 app.set('view engine', 'ejs');
 
@@ -62,7 +63,13 @@ app.route('/class/:classCode/lesson/r/:lessonUrl')
 	.get(LessonController.loadLesson)
 	.delete(LessonController.deleteLesson);
 
-app.get('/class/:classCode/resource', function(req, res) { res.end('Resource Page') });
+app.route('/class/:classCode/resource')
+	.get(resourceController.resourcePage)
+	.post(resourceController.uploadFile);
+
+app.get('/class/:classCode/resource/:fileName', resourceController.downloadFile);
+
+app.get('/class/:classCode/resource/delete/:fileName', resourceController.deleteFile);
 
 app.post('/post/add', forumController.addPost);
 
