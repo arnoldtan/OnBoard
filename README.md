@@ -12,9 +12,12 @@
 ### 4. Create folder for file storage system
 `mkdir OnBoard/resource`
 
-### 5. Running Node Server
-`node OnBoard/index.js`
+### 5. Installing NPM dependencies
+`cd OnBoard && npm install`
 
-### 6. Preview the app
+### 6. Running Node Server
+`node index.js`
+
+### 7. Preview the app
 1. Click on "Preview" in the navigation bar
 2. Click "Preview Running Application" in the dropdown menu
