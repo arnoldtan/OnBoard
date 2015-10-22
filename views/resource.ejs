@@ -112,19 +112,24 @@
 			<ul class="right">
 				<li><a class="button" href="/logout">Log Out</a></li>
 				<li><a class="button" href="/dashboard">Dashboard</a></li>
+				<li><a class="button" href="/class/<%= Class.classCode %>"><%= Class.className %></a></li>
 			</ul>
 		</header>
 		<div id="content-wrapper">
 			<h3>Resources</h3>
-			<form action="" method="post" enctype="multipart/form-data">
-				<input type="file" name="upload">
-				<input type="submit" value="Upload">
-			</form>
+			<% if (user.type === 'teacher') { %>
+				<form action="" method="post" enctype="multipart/form-data">
+					<input type="file" name="upload" required>
+					<input type="submit" value="Upload">
+				</form>
+			<% } %>
 			<% for (var i=files.length-1; i>-1; --i) { %>
 				<hr>
 				<div style="padding-right: 20em; margin: 2em">
 					<a href="/class/<%= Class.classCode %>/resource/<%= files[i] %>"><%= files[i] %></a>
-					<a style="float:right;" id="delete-file-button" class="button button-primary" href="/class/<%= Class.classCode %>/resource/delete/<%= files[i] %>">DELETE</a>
+					<% if (user.type === 'teacher') { %>
+						<a style="float:right;" id="delete-file-button" class="button button-primary" href="/class/<%= Class.classCode %>/resource/delete/<%= files[i] %>">DELETE</a>
+					<% } %>
 				</div>
 			<% } %>
 		</div>
