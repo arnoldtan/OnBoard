@@ -9,7 +9,7 @@ io.adapter(redis({ host: '127.0.0.1', port: 6379 }));
 
 require('./io.js')(io);
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 8080);
 //http.listen(process.env.PORT || 3000, process.env.IP);
 
 models.sequelize.sync({ force: true }).then(function () {
