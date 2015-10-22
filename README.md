@@ -9,9 +9,12 @@
 ### 3. Running MySQL Server
 `mysql-ctl start`
 
-### 4. Running Node Server
+### 4. Create folder for file storage system
+`mkdir OnBoard/resource`
+
+### 5. Running Node Server
 `node OnBoard/index.js`
 
-### 5. Preview the app
+### 6. Preview the app
 1. Click on "Preview" in the navigation bar
 2. Click "Preview Running Application" in the dropdown menu
